@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+ <style>
+     body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      #btn {
+        padding: 9px 18px;
+        font-size: 16px;
+        margin-bottom: 30px;
+        cursor: pointer;
+        background-color: #ff003c;
+        color: white;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 20px;
+      }
+      th, td {
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        text-align: left;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+      .completed {
+        background-color: #d4edda;
+        color: #155724;
+      }
+      .not-completed {
+        background-color: #f8d7da;
+        color: #721c24;
+      }
+
+    </style>
+   
+  <body>
+    <button id="btn">Get Data In Table</button>
+    <script>
+
+      const data=[
+        {name:"John",age:25,city:"New York"},
+        {name:"Jane",age:30,city:"San Francisco"},
+      ];
+      const jsondata=JSON.stringify(data);
+      console.log(data);
+      document.getElementById("btn").addEventListener("click", () => {
+        let prom = fetch("file.json");
+        prom.then((res) => {
+          return res.json();
+        }).then((todos) => {
+          console.log(todos);
+          const table = document.createElement("table");
+          table.classList.add("table");
+          table.setAttribute("border", "1");
+          const tbody = document.createElement("tbody");
+          table.append(tbody);
+
+          // Create table header dynamically
+          const tdr = document.createElement("tr");
+          const keys = Object.keys(todos[0]);
+          keys.forEach((k) => {
+            const th = document.createElement("th");
+            th.innerHTML = k.toUpperCase();
+            tdr.append(th);
+          });
+          tbody.append(tdr);
+
+          todos.forEach((item) => {
+            const tr = document.createElement("tr");
+            keys.forEach((k) => {
+              const td = document.createElement("td");
+              let value = item[k];
+              if (typeof value === "boolean") {
+                if(value) {
+                  value = "Completed";
+                  td.classList.add("completed");
+                } else {
+                  value = "Not Completed";
+                  td.classList.add("not-completed");
+                }
+              }
+              td.innerHTML = value;
+              tr.append(td);
+            });
+            tbody.append(tr);
+          });
+
+          document.body.append(table);
+        });
+        });
+    
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+[
+  { "name": "John", "age": 25, "city": "New York" },
+  { "name": "Jane", "age": 30, "city": "San Francisco" }
+]
